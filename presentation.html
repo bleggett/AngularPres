@@ -15,35 +15,127 @@
                 <ul>
                     <li>It is <i>not</i> a databinding library like Knockout, or a catchall 'glue' library like jQuery.</li>
                     <br>
-                    <li>It is a full-on clientside single page application (SPA) framework.</li>
+                    <li>It does not depend on or derive any of its functionality from any other external JS libraries (Okay, it bundles jQLite, but that barely counts).</li>
                     <br>
-                    <li>It does 2-way databinding, routing, view orchestration, depedency injection, custom HTML directives, etc.
+                    <li>It doesn't have anything to do with look and feel, you want Bootstrap or homerolled stuff for that.</li>
                 </ul>
             </section>
             <section>
                 <h2>What Is AngularJS, Really?</h2>
                 <hr>
                 <ul>
-                    <li>It is <i>not</i> a databinding library like Knockout, or a catchall 'glue' library like jQuery.</li>
-                    <br>
                     <li>It is a full-on clientside single page application (SPA) framework.</li>
                     <br>
-                    <li>It does 2-way databinding, routing, view orchestration, depedency injection, custom HTML directives, etc.
+                    <li>
+                        It does:
+                        <ul class="fragment fade-in">
+                            <li>2-way databinding</li>
+                            <li>Routing</li>
+                            <li>View orchestration</li>
+                            <li>Depedency injection</li>
+                            <li>DOM-based templating</li>
+                            <li>Custom HTML components</li>
+                            <li>etc.</li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
             <section>
                 <h2>What Angular Does And How It Does It</h2>
                 <hr>
-                <ul>
-                    <li>It is <i>not</i> a databinding library like Knockout, or a catchall 'glue' library like jQuery.</li>
-                    <br>
-                    <li>It is a full-on clientside single page application (SPA) framework.</li>
-                    <br>
-                    <li>It does 2-way databinding, routing, view orchestration, depedency injection, custom HTML directives, etc.
-                </ul>
+                <a href="http://jsfiddle.net/basarat/V9sYB/">Super-simple databinding example with a computed property</a>
+                <br>
+                <a href="http://jsfiddle.net/phanboyiv/epqzra3d/">Another databinding example with routing.</a>
+                <br>
+                <p>
+                    Databinding in the modern Javascript world is virtually uniform in terms of features,
+                    the differences between various frameworks comes down to syntax and the mechanism used under the covers.
+                </p>
+                <p>Databinding is the core, but Angular is designed to be a complete solution for clientside, so it also includes a </p>
             </section>
             <section>
                 <h2>How Angular Does MVVM</h2>
+                <hr>
+                <ul>
+                    <li>
+                        What you need to do MVVM in a nutshell:
+                        <ul>
+                            <li>
+                                A bespoke model for each view, with 2-way databinding being the sole link between the "view" and the "view-model".
+                            </li>
+                        </ul>
+                    </li>
+                    <br>
+                    <li>
+                        This was primarily devised by Microsoft to fix inherent problems in how their desktop apps were designed and built,
+                        but it can be used for web apps as well.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h2>How Angular Does MVVM, Cont.</h2>
+                <hr>
+                <ul>
+                    <li>
+                        Angular officially supports MVW.
+                        <p class="fragment fade-in">a.k.a. "Model-View-Whatever"</p>
+                    </li>
+                    <br>
+                    <!--<li>DOM manipulation is kept out of the view.</li>
+                    <br>-->
+                    <li>Angular does not use change listeners or "observable properties" like Silverlight or Knockout in an effort to avoid the overhead those techniques bring with them.</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Ridin' Dirty</h2>
+                <hr>
+                <blockquote>
+                    To contrast dirty-checking (AngularJS) vs change listeners (KnockoutJS and Backbone.js):
+                    While dirty-checking may seem simple, and even inefficient (I will address that later), it turns out that it is semantically correct all the time,
+                    while change listeners have lots of weird corner cases [e.g. change coalescence and change listener synchonization] and need things like dependency tracking to make it more semantically correct.
+                    KnockoutJS dependency tracking is a clever feature for a problem which AngularJS does not have.
+                    <br />
+                    <br />
+                    <a href="http://stackoverflow.com/a/9693933/1268030">--Misko Hevery</a>
+                </blockquote>
+            </section>
+            <section>
+                <h2>They See Me Checkin', They Hatin'</h2>
+                <hr>
+                <ul>
+                    <li>
+                        So this dirty checking technique seems like it'd be slow, right?
+                    </li>
+                    <br>
+                    <li class="fragment fade-in">
+                        In reality, it's really fast. Turns out most browsers from IE8 on up are really good at executing Javascript quickly.
+                    </li>
+                    <br>
+                    <li class="fragment fade-in">
+                        10,00 listeners on a single page: 6ms on a recent browser, 40ms on IE8.<br />Anything under 50ms is pretty much instantaneous from a human perspective.
+                        <ul>
+                            <li><a href="http://jsperf.com/angular-vs-react-vs-ember-performance">Angular vs Ember vs React Perf Test</a></li>
+                            <li><a href="http://jsperf.com/knockout-vs-angular-vs-ember-vs-mithril">Angular vs Knockout vs Ember vs Mithril Perf Test</a></li>
+                            <li>..and there are lots more on <a href="http://jsperf.com">jsperf.com</a></li>
+                        </ul>
+                    </li>
+                    <br />
+                    <li class="fragment fade-in">Benchmarks should be taken with a grain of salt, but it's pretty clear that all of these frameworks are comparable in terms of perf and are 'fast enough'.</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Angular Testability</h2>
+                <hr>
+                <ul>
+                    <li>Angular uses dependency injection for <b>everything</b>, scopes, controllers, services.</li>
+                    <br>
+                    <li>Everything is mockable.</li>
+                    <br>
+                    <li>Angular comes with a variety of built-in mocks, including a mock HTTP provider to inject fake server responses into controllers.</li>
+                    <br>
+                    <li>It becomes very easy to cover all of your logic with a unit test runner like Jasmine, completely independent of the UI.</li>
+                    <li>It does 2-way databinding, routing, view orchestration, depedency injection, custom HTML directives, etc.
+                </ul>
                 <a href="http://jsfiddle.net/phanboyiv/epqzra3d/">Databinding example with routing.</a>
             </section>
             <section>
@@ -71,17 +163,17 @@
                 <a href="http://jsperf.com/angularjs-vs-knockoutjs">Knockout vs Angular Performance Comparison (circa 2012)</a>
             </section>
             <section>
-            <h2>Angular And Other Frameworks</h2>
-            <hr>
-            <ul>
-                <li>ASP.Net isn't built for single page applications. The top hit for making an SPA on the ASP.Net site uses AngularJS and WebAPI, which is what I'm pushing.</li>
-                <br>
-                <li>For that and other reasons, ASP.Net isn't very common in the webapp world these days.</li>
-                <br>
-                <li>Microsoft is radically retooling ASP.Net right now in an attempt to keep up.</li>
-                <br>
-                <li>It does databinding, routing, view orchestration, depedency injection, custom HTML directives, etc.
-            </ul>
+                <h2>Angular And Other Frameworks</h2>
+                <hr>
+                <ul>
+                    <li>ASP.Net isn't built for single page applications. The top hit for making an SPA on the ASP.Net site uses AngularJS and WebAPI, which is what I'm pushing.</li>
+                    <br>
+                    <li>For that and other reasons, ASP.Net isn't very common in the webapp world these days.</li>
+                    <br>
+                    <li>Microsoft is radically retooling ASP.Net right now in an attempt to keep up.</li>
+                    <br>
+                    <li>It does databinding, routing, view orchestration, depedency injection, custom HTML directives, etc.
+                </ul>
             </section>
             <section id="show-a-link">
                 <h1>Show a live link</h1>
